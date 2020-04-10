@@ -5,18 +5,15 @@ XData setup
 {
 <Manifest>
   <Default Name="SourceDir" Value="#{$system.Process.CurrentDirectory()}src"/>
-  <Default Name="Namespace" Value="IRISAPP"/>
-  <Default Name="app" Value="irisapp" />
 
-  <Namespace Name="${Namespace}" Code="${Namespace}" Data="${Namespace}" Create="yes" Ensemble="no">
+  <Namespace Name="IRISAPP" Code="IRISAPP" Data="IRISAPP" Create="yes" Ensemble="no">
 
     <Configuration>
-      <Database Name="${Namespace}" Dir="/opt/${app}/data" Create="yes" Resource="%DB_${Namespace}"/>
+      <Database Name="IRISAPP" Dir="/opt/irisapp/data" Create="yes"/>
 
       <Import File="${SourceDir}" Flags="ck" Recurse="1"/>
     </Configuration>
-    <CSPApplication Url="/csp/${app}" Directory="${cspdir}${app}"  ServeFiles="1" Recurse="1" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="32"
-       
+     <CSPApplication Url="/swagger-ui" Directory="${cspdir}swagger-ui"  ServeFiles="1" Recurse="1" MatchRoles=":%DB_${Namespace}" AuthenticationMethods="64"
     />
   </Namespace>
 
