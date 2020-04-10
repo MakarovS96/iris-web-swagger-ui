@@ -6,42 +6,35 @@ Parameter HandleCorsRequest = 1;
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
-<Route Url="/person/all" Method="GET" Call="GetAllPersons"/>
 <Route Url="/_spec" Method="GET" Call="SwaggerSpec" />
-<Route Url="/person/:id" Method="GET" Call="GetPerson"/>
-<Route Url="/person/:id" Method="PUT" Call="UpdatePerson"/>
-<Route Url="/person/:id" Method="DELETE" Call="DeletePerson"/>
-<Route Url="/person/" Method="POST" Call="CreatePerson"/>
+<Route Url="/persons" Method="GET" Call="GetAllPersons"/>
+<Route Url="/persons/:id" Method="GET" Call="GetPerson"/>
+<Route Url="/persons/:id" Method="PUT" Call="UpdatePerson"/>
+<Route Url="/persons/:id" Method="DELETE" Call="DeletePerson"/>
+<Route Url="/persons" Method="POST" Call="CreatePerson"/>
 <!-- Swagger specs -->
- 
 </Routes>
 }
 
 ClassMethod GetAllPersons() As %Status
 {
-
-    #dim tSC As %Status = $$$OK
+    Set %response.ContentType = ..#CONTENTTYPEJSON
 
     Set rset = ##class(Sample.Person).ExtentFunc()
-
-    Set %response.ContentType = ..#CONTENTTYPEJSON
     Write "["
-    While rset.%Next() {   
-        Set person = ##class(Sample.Person).%OpenId(rset.ID)    
+    While rset.%Next() {
+        Set person = ##class(Sample.Person).%OpenId(rset.ID)
         Do person.%JSONExport()
-        Write ","
-
+        if (rset.%Next()) {
+            Write ","
+        }
     }
     Write "]"
-    Quit tSC
+    Quit $$$OK
 }
 
 ClassMethod GetPerson(id As %Integer) As %Status
 {
-	#dim tSC As %Status = $$$OK
-    #dim e As %Exception.AbstractException
-
-
     #; Set the response header to plain text
     Set %response.ContentType = ..#CONTENTTYPEJSON
 
@@ -51,61 +44,51 @@ ClassMethod GetPerson(id As %Integer) As %Status
 
     Do person.%JSONExport()
 
-    Quit tSC
+    Quit $$$OK
 }
 
 ClassMethod CreatePerson() As %Status
 {
-	#dim tSC As %Status = $$$OK
-    #dim e As %Exception.AbstractException
+    #dim tSC As %Status = $$$OK
     Set person = ##class(Sample.Person).%New()
     Set data = {}.%FromJSON(%request.Content)
 
+    $$$TOE(tSC, person.%JSONImport(data))
+    $$$TOE(tSC, person.%Save())
 
-    $$$TOE(tSC,person.%JSONImport(data))
-    $$$TOE(tSC,person.%Save())
-
-    Set %response.Status = 204
+    Set %response.Status = 201
     Set %response.ContentType = ..#CONTENTTYPEJSON
-    //d data.%ToJSON()
     Do person.%JSONExport()
-
-    Quit tSC
+    Quit $$$OK
 }
 
 ClassMethod UpdatePerson(id As %Integer) As %Status
 {
-	#dim tSC As %Status = $$$OK
-    #dim e As %Exception.AbstractException
+    #dim tSC As %Status = $$$OK
     Set person = ##class(Sample.Person).%OpenId(id)
+
     If '$IsObject(person) Return ..Http404()
     Set data = {}.%FromJSON(%request.Content)
 
-
-    $$$TOE(tSC,person.%JSONImport(data))
-    $$$TOE(tSC,person.%Save())
+    $$$TOE(tSC, person.%JSONImport(data))
+    $$$TOE(tSC, person.%Save())
 
     Set %response.Status = 200
-
     Set %response.ContentType = ..#CONTENTTYPEJSON
     Do person.%JSONExport()
-
     Quit tSC
 }
 
 ClassMethod DeletePerson(id As %Integer) As %Status
 {
-	#dim tSC As %Status = $$$OK
-    #dim e As %Exception.AbstractException
+    #dim tSC As %Status = $$$OK
     Set person = ##class(Sample.Person).%OpenId(id)
     If '$IsObject(person) Return ..Http404()
 
     $$$TOE(tSC,person.%DeleteId(id))
 
     Set %response.Status = 200
-
     Set %response.ContentType = ..#CONTENTTYPEJSON
-
     Quit tSC
 }
 
@@ -113,7 +96,7 @@ ClassMethod SwaggerSpec() As %Status
 {
   Set tSC = ##class(%REST.API).GetWebRESTApplication($NAMESPACE, %request.Application, .swagger)
   Do swagger.info.%Remove("x-ISC_Namespace")
-  Set swagger.basePath = "/"
+  Set swagger.basePath = "/crud"
   Set swagger.info.title = "InterSystems IRIS CRUD demo"
   Set swagger.info.version = "0.1"
   Set swagger.host = "localhost:52773"
