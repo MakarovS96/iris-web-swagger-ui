@@ -21,6 +21,7 @@ Any contribution is welcome.
 To start you can clone the repository and up the project in Docker.
 ```bash
 $ git clone https://github.com/atygaev/iris-web-swagger-ui.git
+$ cd iris-web-swagger-ui
 $ docker-compose up -d
 ```
 
