@@ -3,7 +3,8 @@
   <Document name="swagger-ui.ZPM">
     <Module>
       <Name>swagger-ui</Name>
-      <Version>1.0.0</Version>
+      <Version>1.0.1</Version>
+      <Description>Interactive Swagger docs for your REST API</Description>
       <Packaging>module</Packaging>
        <CSPApplication
         SourcePath="/swagger"
