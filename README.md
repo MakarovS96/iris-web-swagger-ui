@@ -1,4 +1,6 @@
 ## IRIS Swagger UI
+[![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Firis-web-swagger-ui&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Firis-web-swagger-ui) 
+
 It is a tool to generate interactive documentation for your REST API.
 
 ## Install
