@@ -6,7 +6,7 @@
       <Version>1.0.1</Version>
       <Description>Interactive Swagger docs for your REST API</Description>
       <Packaging>module</Packaging>
-       <CSPApplication
+       <WebApplication
         SourcePath="/swagger"
         DeployPath="${cspdir}swagger-ui"
         Url="/swagger-ui"
@@ -14,7 +14,7 @@
         Recurse="1"
         CookiePath="/swagger-ui"
         UseCookies="2"
-        MatchRoles=":{$dbrole}"
+        MatchRoles=":{$globalsDbRole}"
         PasswordAuthEnabled="0"
         UnauthenticatedEnabled="0"
        />
