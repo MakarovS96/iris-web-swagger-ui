@@ -3,10 +3,10 @@
   <Document name="swagger-ui.ZPM">
     <Module>
       <Name>swagger-ui</Name>
-      <Version>1.0.2</Version>
+      <Version>1.0.3</Version>
       <Description>Interactive Swagger docs for your REST API</Description>
       <Packaging>module</Packaging>
-       <WebApplication
+       <CSPApplication
         SourcePath="/swagger"
         DeployPath="${cspdir}swagger-ui"
         Url="/swagger-ui"
@@ -14,7 +14,7 @@
         Recurse="1"
         CookiePath="/swagger-ui"
         UseCookies="2"
-        MatchRoles=":{$globalsDbRole}"
+        MatchRoles=":{$dbrole}"
         PasswordAuthEnabled="0"
         UnauthenticatedEnabled="0"
        />
