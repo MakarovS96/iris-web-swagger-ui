@@ -6,7 +6,7 @@
       <Version>1.0.3</Version>
       <Description>Interactive Swagger docs for your REST API</Description>
       <Packaging>module</Packaging>
-       <CSPApplication
+       <WEBApplication
         SourcePath="/swagger"
         DeployPath="${cspdir}swagger-ui"
         Url="/swagger-ui"
