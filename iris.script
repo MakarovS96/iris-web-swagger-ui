@@ -1,0 +1,12 @@
+    ;do $System.OBJ.LoadDir("/opt/irisapp/src","ck",,1)
+
+    zn "%SYS"
+    Do ##class(Security.Users).UnExpireUserPasswords("*")
+    ;s version="latest" s r=##class(%Net.HttpRequest).%New(),r.Server="pm.community.intersystems.com",r.SSLConfiguration="ISC.FeatureTracker.SSL.Config" d r.Get("/packages/zpm/"_version_"/installer"),$system.OBJ.LoadStream(r.HttpResponse.Data,"c")
+
+    zn "USER"
+    zpm "install rest-api-template"
+    zpm "load /home/irisowner/dev/ -v":1
+
+
+    halt
