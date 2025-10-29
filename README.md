@@ -18,6 +18,17 @@ ZPM: USER> install swagger-ui
 ## Demo
 ![swagger-ui](https://user-images.githubusercontent.com/27987608/79063723-86cdde00-7ccd-11ea-9914-b8cd7077f6e7.png)
 
+
+## Making your url in swagger-ui deafault
+Assuming you've installed swagger-ui (e.g. via zpm as mentioned above) you may want to change the default endpoint to your one.
+In docker environment you can make it as follows. Add to Dockerfile after IRIS start new lines:
+```
+RUN old=http://localhost:52773/crud/_spec && \
+	new=http://localhost:52773/your/api/_spec && \
+	sed -i "s|$old|$new|g" /usr/irissys/csp/swagger-ui/swagger-initializer.js
+```
+That's it.
+
 ## Contribute
 Any contribution is welcome.
 To start you can clone the repository and up the project in Docker.
@@ -30,3 +41,5 @@ $ docker-compose up -d
 For your convenience the project contains simple REST API ([src/Sample/PersonREST.cls](https://github.com/atygaev/iris-web-swagger-ui/blob/master/src/Sample/PersonREST.cls)).
 
 Swagger documentation for the REST API is available at [http://localhost:52773/swagger-ui/index.html](http://localhost:52773/swagger-ui/index.html)
+
+
